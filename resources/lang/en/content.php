@@ -19,5 +19,6 @@ return [
     "comment"=>'Add comment',
     "name"=> 'Name',
     "place_work" => 'Place work',
-    "edit_data" => 'Edit profile data'
+    "edit_data" => 'Edit profile data',
+    "comment_title"=>"Comments"
 ];
