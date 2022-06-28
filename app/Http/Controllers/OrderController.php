@@ -15,7 +15,7 @@ class OrderController extends Controller
         $this->officeService =  $officeService;
     }
     public function index() {
-        return Order::with(['client','office.attributes.city'])->paginate();
+        return Order::with(['client','office.attributes.city','office.comments'])->paginate();
     }
     public function store(RentRequest $request) {
         return $this->officeService->rent($request);
