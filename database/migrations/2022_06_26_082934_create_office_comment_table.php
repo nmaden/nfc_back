@@ -15,7 +15,7 @@ class CreateOfficeCommentTable extends Migration
     {
         Schema::create('office_comments', function (Blueprint $table) {
             $table->id();
-            $table->longText('comments');
+            $table->longText('comment');
             $table->foreignId('office_id')->constrained('offices')->onDelete('cascade');
             $table->timestamps();
         });

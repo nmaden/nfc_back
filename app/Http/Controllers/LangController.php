@@ -7,8 +7,7 @@ use Illuminate\Http\Request;
 class LangController extends Controller
 {
     public function index() {
-        return 
-        response()->json([
+        return response()->json([
             "content"   => __("content"),
         ], 200);
     }

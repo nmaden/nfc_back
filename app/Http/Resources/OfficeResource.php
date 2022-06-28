@@ -23,6 +23,7 @@ class OfficeResource extends JsonResource
             'tv'=>$this->attributes->tv,
             'coffee_machine'=>$this->attributes->coffee_machine,
             'count_seats'=>$this->attributes->count_seats,
+            'comments'=>$this->comments
         ];
     }
 }

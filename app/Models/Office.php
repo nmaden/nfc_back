@@ -13,4 +13,9 @@ class Office extends Model
     {
         return $this->hasOne(Attributes::class,'office_id','id');
     }
+
+    public function comments()
+    {
+        return $this->hasMany(OfficeComments::class,'office_id','id');
+    }
 }

@@ -11,5 +11,13 @@ return [
     'password'=>'Password',
     'name'=>'Full name',
     'btn_book_text'=>'Book',
-    'select_date'=>"Select date"
+    'select_date'=>"Select date",
+    "booked_at"=>"Booked at",
+    "registration"=> 'Registration',
+    "fill_link"=>'Fill line',
+    "sign"=>'Sign',
+    "comment"=>'Add comment',
+    "name"=> 'Name',
+    "place_work" => 'Place work',
+    "edit_data" => 'Edit profile data'
 ];

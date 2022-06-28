@@ -33,7 +33,4 @@ class OfficeController extends Controller
         
     }
 
-    public function rent(RentRequest $request,int $id) {
-        return $this->officeService->rent($request,$id);
-    }
 }

@@ -41,12 +41,12 @@ class DatabaseSeeder extends Seeder
         Office::create([
             'name'=>'Office 2',
             'price'=>'3000',
-            'user_id'=>2
+            'user_id'=>1
         ]);
         Office::create([
             'name'=>'Office 3',
             'price'=>'4000',
-            'user_id'=>2
+            'user_id'=>1
         ]);
 
 
