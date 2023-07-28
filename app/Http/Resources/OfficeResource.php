@@ -15,14 +15,10 @@ class OfficeResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'=>$this->id,
-            'name'=>$this->name,
-            'area'=>$this->attributes->area,
-            'city'=>$this->attributes->city,
-            'wifi'=>$this->attributes->wifi,
-            'tv'=>$this->attributes->tv,
-            'coffee_machine'=>$this->attributes->coffee_machine,
-            'count_seats'=>$this->attributes->count_seats,
+            'id'=> $this->id,
+            'name_ru' => $this->getTranslation('name', 'ru'),
+            'name_en' => $this->getTranslation('name', 'en'),
+            'services'=> $this->services,
             'comments'=>$this->comments
         ];
     }

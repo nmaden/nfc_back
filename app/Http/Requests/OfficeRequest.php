@@ -24,13 +24,8 @@ class OfficeRequest extends FormRequest
     public function rules()
     {
         return [
-            'city'=>  ['nullable','integer'],
-            'area'=>  ['nullable','integer'],
-            'wifi'=>  ['nullable','integer'],
-            'tv'=>  ['nullable','integer'],
-            'coffee_machine'=>  ['nullable','integer'],
-            'price_from'=>  ['nullable','integer'],
-            'price_to'=>  ['nullable','integer'],
+            'ru_name' => ['required','string'],
+            'en_name' =>  ['required','string']
         ];
     }
 }

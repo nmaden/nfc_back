@@ -1,79 +1,63 @@
 <?php
-
 namespace App\Services;
 
-use App\Http\Resources\CarRentResource;
+use App\Http\Requests\OfficeSearchRequest;
 use App\Http\Resources\OfficeResource;
-use App\Models\CarsToRent;
-use App\Models\Lecture;
+use App\Models\EavAttribute;
 use App\Models\Office;
 use App\Models\Order;
-use Carbon\Carbon;
-use Illuminate\Support\Str;
-   
+use Illuminate\Support\Arr;
 
-class OfficeService 
+class OfficeService
 {
-    public function rent($request) {
-        $office = Office::where('id',$request->office_id)->first();
-        if(!$office) {
+    public function rent(RentRequest $request)
+    {
+        $office = Office::findOrFail($request->office_id);
+
+        if (Order::where('office_id', $request->office_id)
+            ->where('date', $request->date)
+            ->exists()) {
             return response()->json([
-                "message"   => trans("messages.invalid_office"),
+                "message" => trans("messages.busy_office"),
             ], 422);
         }
-        $existOrder = Order::where('office_id',$request->office_id)->where('date',$request->date)->first();
-        if($existOrder) {
-            return response()->json([
-                "message"   => trans("messages.busy_office"),
-            ], 422); 
-        }
-        $order = new Order();
-        $order->office_id = $request->office_id;
-        $order->date = $request->date;
-        $order->client_id = auth()->user()->id;
-        $order->save();
-        
+
+        $order = new Order([
+            'date' => $request->date,
+            'client_id' => auth()->user()->id,
+        ]);
+
+        $office->orders()->save($order);
+
         return response()->json([
-            "message"   => trans("messages.book_success"),
+            "message" => trans("messages.book_success"),
         ], 200);
     }
-    public function fetch($request) {
+
+    public function fetch(OfficeSearchRequest $request)
+    {
         $office = Office::query();
-        if($request->filled('area')) {
-            $office->whereHas('attributes', function ($attribute) use($request)  {
-                return $attribute->where('area','>=',$request->area);
+
+        $servicesAttribute = EavAttribute::where('code', 'services')->first();
+        if ($request->filled('services')) {
+            $services = Arr::wrap($request->input('services'));
+            $office->whereHas('services', function ($query) use ($servicesAttribute, $services) {
+                $query->whereIn('value', $services)->where('eav_attribute_id', $servicesAttribute->id);
             });
-        }
-        if($request->filled('city_id')) {
-            $office->whereHas('attributes', function ($attribute) use($request)  {
-                return $attribute->where('city_id',$request->city_id);
-            });
-        }
-        if($request->filled('count_seats')) {
-            $office->whereHas('attributes', function ($attribute) use($request)  {
-                return $attribute->where('count_seats',$request->count_seats);
-            });
-        }
-        if(Str::contains($request->service,1)) {
-            $office->whereHas('attributes', function ($attribute) use($request)  {
-                return $attribute->where('wifi',1);
-            });
-        }
-        if(Str::contains($request->service,3)) {
-            $office->whereHas('attributes', function ($attribute) use($request)  {
-                return $attribute->where('coffee_machine',1);
-            });
-        }
-        if(Str::contains($request->service,2)) {
-            
-            $office->whereHas('attributes', function ($attribute) use($request)  {
-                return $attribute->where('tv',1);
-            });
-        }
-        if($request->has('name')) {
-            $office->where('name','like','%'.$request->name.'%');
         }
 
-        return OfficeResource::collection($office->paginate());   
+        if ($request->has('name')) {
+
+            if ($request->has('name')) {
+                $locale = app()->getLocale();
+                $searchTerm = $request->input('name');
+
+                $office->whereTranslation('name', 'like', '%' . $searchTerm . '%', null, $locale);
+            }
+
+            return OfficeResource::collection($office->paginate());
+        }
+
+        return OfficeResource::collection($office->paginate());
     }
 }

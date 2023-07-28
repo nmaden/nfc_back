@@ -15,7 +15,7 @@ class CreateOfficeTable extends Migration
     {
         Schema::create('offices', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->json('name');
             $table->integer('price');
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->timestamps();

@@ -2,12 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Attributes;
-use App\Models\Cities;
-use App\Models\Citites;
+use App\Models\City;
+use App\Models\EavAttribute;
 use App\Models\Office;
 use App\Models\User;
-use Attribute;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -31,65 +29,70 @@ class DatabaseSeeder extends Seeder
             'email'=> 'user@gmail.com',
             'password'=>bcrypt('password')
         ]);
-   
 
-        Office::create([
-            'name'=>'Office 1',
-            'price'=>'2000',
-            'user_id'=>1
+        $first_office = new Office();
+        $first_office->setTranslations('name', [
+            'en' => 'Office 1',
+            'ru' => 'Офис 1',
         ]);
-        Office::create([
-            'name'=>'Office 2',
-            'price'=>'3000',
-            'user_id'=>1
+        $first_office->price = 2000;
+        $first_office->user_id = 1;
+        $first_office->save();
+
+        $second_office = new Office();
+        $second_office->setTranslations('name', [
+            'en' => 'Dastan',
+            'ru' => 'Дастан',
         ]);
-        Office::create([
-            'name'=>'Office 3',
-            'price'=>'4000',
-            'user_id'=>1
+        $second_office->price = 2000;
+        $second_office->user_id = 1;
+        $second_office->save();
+
+        $third_office = new Office();
+        $third_office->setTranslations('name', [
+            'en' => 'Amsterdam',
+            'ru' => 'Астердам',
         ]);
+        $third_office->price = 2000;
+        $third_office->user_id = 1;
+        $third_office->save();
 
 
-        Cities::create([
-            'name_ru'=>'Париж',
-            'name_eng'=>'Paris'
-        ]);
-        Cities::create([
-            'name_ru'=>'Лион',
-            'name_eng'=>'Lyon'
-        ]);
-        Cities::create([
-            'name_ru'=>'Марсель',
-            'name_eng'=>'Marseille'
-        ]);
-        
 
-        Attributes::create([
-            'office_id'=>1,
-            'area'=>200,
-            'city_id'=>1,
-            'count_seats'=>10,
-            'wifi'=>true,
-            'coffee_machine'=> true,
-            'tv'=>false
+
+        $eavAttribute = EavAttribute::firstOrCreate(['code' => 'services', 'name' => 'Services']);
+        $first_office->services()->attach($eavAttribute, ['value' => 'Cleaning']);
+        $first_office->services()->attach($eavAttribute, ['value' => 'Parking']);
+        $first_office->services()->attach($eavAttribute, ['value' => 'Wifi']);
+
+
+        $second_office->services()->attach($eavAttribute, ['value' => 'Cleaning']);
+        $second_office->services()->attach($eavAttribute, ['value' => 'Parking']);
+
+
+        $third_office->services()->attach($eavAttribute, ['value' => 'Cleaning']);
+        $third_office->services()->attach($eavAttribute, ['value' => 'Wifi']);
+
+
+
+        City::create([
+            'name' => [
+                'en' => 'Paris',
+                'ru' => 'Париж',
+            ],
         ]);
-        Attributes::create([
-            'office_id'=>2,
-            'area'=>200,
-            'city_id'=>2,
-            'count_seats'=>20,
-            'wifi'=>false,
-            'coffee_machine'=> true,
-            'tv'=>true
+        City::create([
+            'name' => [
+                'en' => 'Lyon',
+                'ru' => 'Лион',
+            ],
         ]);
-        Attributes::create([
-            'office_id'=>3,
-            'area'=>200,
-            'city_id'=>3,
-            'count_seats'=>30,
-            'wifi'=>true,
-            'coffee_machine'=> true,
-            'tv'=>true
+        City::create([
+            'name' => [
+                'en' => 'Marseille',
+                'ru' => 'Марсель',
+            ],
         ]);
+
     }
 }

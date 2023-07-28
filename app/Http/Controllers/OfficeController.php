@@ -3,34 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\OfficeRequest;
-use App\Http\Requests\RentRequest;
-use App\Models\Office;
+use App\Http\Requests\OfficeSearchRequest;
+use App\Repositories\OfficeRepository;
 use App\Services\OfficeService;
-use Illuminate\Http\Request;
 
 class OfficeController extends Controller
 {
-
-   
     public $officeService;
-    public function __construct(OfficeService $officeService)
+    public $officeRepository;
+
+    public function __construct(OfficeService $officeService,OfficeRepository $officeRepository)
     {
         $this->officeService =  $officeService;
+        $this->officeRepository = $officeRepository;
     }
 
-    public function index(OfficeRequest $request) {
+    public function index(OfficeSearchRequest $request) {
         return $this->officeService->fetch($request);
     }
 
-    public function store() {
-        
-    }
+    public function store(OfficeRequest $request) {
+        $attributes = [
+            'name' => [
+                'en' => $request->ru_name,
+                'ru' => $request->en_name
+            ],
+        ];
 
-    public function update() {
-
+        return $this->officeRepository->create($attributes);
     }
-    public function show() {
-        
-    }
-
 }

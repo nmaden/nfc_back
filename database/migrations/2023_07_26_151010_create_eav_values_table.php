@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCitiesTable extends Migration
+class CreateEavValuesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreateCitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('cities', function (Blueprint $table) {
+        Schema::create('eav_values', function (Blueprint $table) {
             $table->id();
-            $table->json('name');
+            $table->foreignId('office_id')->constrained('offices')->onDelete('cascade');
+            $table->foreignId('eav_attribute_id')->constrained('eav_attributes')->onDelete('cascade');
+            $table->string('value');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -27,6 +30,6 @@ class CreateCitiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cities');
+        Schema::dropIfExists('eav_values');
     }
 }

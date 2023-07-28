@@ -21,12 +21,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+
 Route::middleware("localization")->group(function () {
 
     Route::resource('user',UserController::class);
     Route::post('login',[UserController::class,'login']);
     Route::post('registration',[UserController::class,'store']);
-   
+
 
 
     Route::resource('cities',CityController::class);
@@ -35,6 +36,7 @@ Route::middleware("localization")->group(function () {
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::resource('comment',CommentController::class);
 
+        Route::resource('offices',OfficeController::class);
         Route::post('update/user',[UserController::class,'update']);
         Route::get('user',[UserController::class,'show']);
 

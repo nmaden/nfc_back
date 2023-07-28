@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RentRequest extends FormRequest
+class CityRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,8 @@ class RentRequest extends FormRequest
     public function rules()
     {
         return [
-            'office_id'=>['required','integer','exists:App\Models\Office,id'],
-            'date'=>['required','date']
+            'ru_name' => ['required','string'],
+            'en_name' =>  ['required','string']
         ];
     }
 }
