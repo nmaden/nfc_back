@@ -21,6 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'photo_name',
+        'photo_path',
+        'name_business'
     ];
 
     /**
@@ -41,4 +44,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function phones()
+    {
+        return $this->hasMany(ClientPhone::class,'user_id','id');
+    }
+
+
+    public function links()
+    {
+        return $this->hasMany(ClientLink::class,'user_id','id');
+    }
 }

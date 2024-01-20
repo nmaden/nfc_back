@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEavValuesTable extends Migration
+class CreateClientLinksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateEavValuesTable extends Migration
      */
     public function up()
     {
-        Schema::create('eav_values', function (Blueprint $table) {
+        Schema::create('client_links', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('office_id')->constrained('offices')->onDelete('cascade');
-            $table->foreignId('eav_attribute_id')->constrained('eav_attributes')->onDelete('cascade');
+            $table->string('name')->nullable();
             $table->string('value');
+            $table->string('icon')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -30,6 +31,6 @@ class CreateEavValuesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('eav_values');
+        Schema::dropIfExists('client_links');
     }
 }

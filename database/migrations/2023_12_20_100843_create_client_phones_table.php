@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOfficeTranslationsTable extends Migration
+class CreateClientPhonesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateOfficeTranslationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('office_translations', function (Blueprint $table) {
+        Schema::create('client_phones', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('office_id')->constrained('offices')->onDelete('cascade');
-            $table->string('locale')->index();
-            $table->json('name');
+            $table->string('name')->nullable();
+            $table->string('value');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class CreateOfficeTranslationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('office_translations');
+        Schema::dropIfExists('client_phones');
     }
 }

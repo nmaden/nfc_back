@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEavAttributesTable extends Migration
+class AddNameBusiness extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateEavAttributesTable extends Migration
      */
     public function up()
     {
-        Schema::create('eav_attributes', function (Blueprint $table) {
-            $table->id();
-            $table->string('code')->unique();
-            $table->string('name');
-            $table->timestamps();
-            $table->softDeletes();
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('name_business')->nullable();
+            $table->string('photo_path')->nullable();
+            $table->string('photo_name')->nullable();
         });
     }
 
@@ -29,6 +27,8 @@ class CreateEavAttributesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('eav_attributes');
+        Schema::table('users', function (Blueprint $table) {
+            //
+        });
     }
 }

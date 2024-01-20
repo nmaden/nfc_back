@@ -36,7 +36,7 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => $request->password
         ];
-        if (auth()->attempt($data)) {
+        if ( auth()->attempt($data) ) {
             $token = auth()->user()->createToken('Admin Login Token')->plainTextToken;
             return response()->json(['token' => $token,'role'=>auth()->user()->id], 200);
         } else {
